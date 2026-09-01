@@ -164,10 +164,10 @@ def tarjeta_kpi(titulo, valor, descripcion, icono=""):
 
 @st.cache_data
 def cargar_datos():
-    df_barrios = pd.read_parquet("Oro/Barrios.parquet")
-    df_rest = pd.read_parquet("Oro/Restaurantes.parquet")
-    df_poi = pd.read_parquet("Oro/POI.parquet")
-    gdf_geo = gpd.read_file("Oro/Barrios.geojson")
+    df_barrios = pd.read_parquet("data/Oro/Barrios.parquet")
+    df_rest = pd.read_parquet("data/Oro/Restaurantes.parquet")
+    df_poi = pd.read_parquet("data/Oro/POI.parquet")
+    gdf_geo = gpd.read_file("data/Oro/Barrios.geojson")
 
     return df_barrios, df_rest, df_poi, gdf_geo
 
