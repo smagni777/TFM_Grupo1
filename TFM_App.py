@@ -54,7 +54,7 @@ def normalizar_0_1(serie):
     """Normalización Min-Max robusta contra nulos y divisiones por cero."""
     serie = pd.to_numeric(serie, errors="coerce").fillna(0)
     minimo, maximo = serie.min(), serie.max()
-    if pd.isna(minimo) or pd.isna(maximo) or maximo == minmo:
+    if pd.isna(minimo) or pd.isna(maximo) or maximo == minimo:
         return pd.Series(0.5, index=serie.index)
     return (serie - minimo) / (maximo - minimo)
 
