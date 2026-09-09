@@ -364,3 +364,8 @@ with tab_algoritmo:
         st.latex(r"IOT = 0.30 \cdot A_{ccesibilidad} + 0.25 \cdot (1 - D_{ensidad}) + 0.25 \cdot V_{ariedad} + 0.20 \cdot (1 - E_{nfoque})")
         st.markdown("""
             El **Índice de Oportunidad Territorial (IOT)** calcula la idoneidad para la redistribución inteligente de flujos. 
+            Al cruzar la reputación online real de **comentarios.parquet** con la capacidad de transporte sostenible, el sistema penaliza las zonas rojas del scatter plot y premia los destinos emergentes de Madrid para desviar el tráfico de viajeros de manera proactiva.
+        """)
+
+st.markdown("---")
+st.caption("TUI Territorial Intelligence Dashboard v4.0 • Sistema de Producción de Máster Terminado • Septiembre 2026")
