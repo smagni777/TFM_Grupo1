@@ -1,7 +1,6 @@
 # ============================================================
-# TUI TERRITORIAL INTELLIGENCE DASHBOARD - ADVANCED PRODUCTION v4
-# Reto 3 - Máster Data Science / Big Data & Business Analytics
-# PARTE 1: Configuración, Estilos Avanzados e Ingestión de Reseñas Reales
+# TUI TERRITORIAL INTELLIGENCE DASHBOARD
+# BLOQUE INTEGRADO: Infraestructura, Carga de Datos y KPIs AI
 # ============================================================
 
 import streamlit as st
@@ -12,7 +11,7 @@ from streamlit_folium import st_folium
 import plotly.express as px
 import numpy as np
 
-# 1. CONFIGURACIÓN COMPONENTES CORE
+# 1. CONFIGURACIÓN DEL FRAMEWORK
 st.set_page_config(
     page_title="TUI AI | Destination Management Dashboard",
     page_icon="🌍",
@@ -20,7 +19,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. SISTEMA DE DISEÑO UI/UX CORPORATIVO (ESTILO TUI LIGHT)
+# 2. DISEÑO DE INTERFAZ CORPORATIVA PREMIUM (TUI STYLE)
 st.markdown("""
 <style>
     .stApp { background-color: #f1f5f9; }
@@ -59,19 +58,35 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 3. INTERFAZ DE CARGA OPTIMIZADA DE ARCHIVOS CORREGIDA
+# 3. COMPONENTES MATEMÁTICOS DE NORMALIZACIÓN (Declarada al inicio)
+def normalizar_0_1(serie):
+    """Normalización Min-Max robusta contra nulos y divisiones por cero."""
+    serie = pd.to_numeric(serie, errors="coerce").fillna(0)
+    minimo, maximo = serie.min(), serie.max()
+    if pd.isna(minimo) or pd.isna(maximo) or maximo == minimo:
+        return pd.Series(0.5, index=serie.index)
+    return (serie - minimo) / (maximo - minimo)
+
+def tarjeta_kpi(titulo, valor, descripcion, icono=""):
+    """Inyección HTML de indicadores limpios."""
+    st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">{icono} {titulo}</div>
+            <div class="kpi-value">{valor}</div>
+            <div class="kpi-description">{descripcion}</div>
+        </div>
+    """, unsafe_allow_html=True)
+
+# 4. CAPA DE INGESTIÓN DE DATOS EN MEMORIA CACHÉ
 @st.cache_data
 def cargar_datos_produccion():
-    # Carga segura del ecosistema de archivos parquet en data/Oro/
     df_barrios = pd.read_parquet("data/Oro/Barrios.parquet")
     df_rest = pd.read_parquet("data/Oro/Restaurantes.parquet")
     df_poi = pd.read_parquet("data/Oro/POI.parquet")
     gdf_geo = gpd.read_file("data/Oro/Barrios.geojson")
     
-    # Ingesta del archivo masivo unificado que procesamos desde Drive
     try:
         df_comentarios = pd.read_parquet("data/Oro/Comentarios.parquet")
-        # Estandarización estricta de nombres de columnas en memoria para el cruce de datos
         df_comentarios.columns = df_comentarios.columns.str.strip()
     except Exception:
         df_comentarios = None
@@ -85,67 +100,51 @@ def cargar_datos_produccion():
 try:
     df_barrios, df_rest, df_poi, gdf_geo, df_comentarios = cargar_datos_produccion()
 except Exception as e:
-    st.error("❌ Infraestructura de datos incompleta. Por favor, verifica las rutas en tu carpeta data/Oro/")
+    st.error("❌ Infraestructura de datos incompleta.")
     st.code(str(e))
     st.stop()
-# ============================================================
-# TUI TERRITORIAL INTELLIGENCE DASHBOARD - RETO 3
-# PARTE 2: Minería de Opiniones Reales, Estrellas AI y Filtros Flexibles
-# ============================================================
 
-# 1. ESTANDARIZACIÓN FORMATO TEXTO DE BARRIOS PARA CRUCES ANALÍTICOS
+# 5. CONTROL Y CÁLCULO DE COLUMNAS DEFENSIVO
+if "tiene_terraza" in df_rest.columns:
+    df_rest["tiene_terraza"] = df_rest["tiene_terraza"].astype(str).str.lower().isin(["true", "1", "si", "sí", "yes"])
+
 df_barrios['barrio_key'] = df_barrios['barrio'].astype(str).str.strip().str.upper()
 
-# 2. PROCESAMIENTO TEXT MINING AVANZADO SOBRE EL PARQUET GENERADO DESDE TU DRIVE
+# Procesamiento de Comentarios del Parquet
 if df_comentarios is not None:
-    # Determinamos dinámicamente el nombre de la columna de barrio en el dataset del compañero
     col_b_review = 'BARRIO_RECURSO' if 'BARRIO_RECURSO' in df_comentarios.columns else ('BARRIO' if 'BARRIO' in df_comentarios.columns else 'barrio')
     df_comentarios['barrio_review_key'] = df_comentarios[col_b_review].astype(str).str.strip().str.upper()
     
-    # Agrupación y cálculo matemático de KPI de Calificaciones y Estrellas Reales
     stats_reviews = df_comentarios.groupby('barrio_review_key').agg(
         reviews_totales=('CALIFICACION', 'count'),
         rating_real_estrellas=('CALIFICACION', 'mean')
     ).reset_index()
     
-    # Combinación segura de métricas con el maestro territorial de barrios
     df_barrios = df_barrios.merge(stats_reviews, left_on='barrio_key', right_on='barrio_review_key', how='left')
     df_barrios['total_comentarios'] = df_barrios['reviews_totales'].fillna(0).astype(int)
     df_barrios['rating_media_estrellas'] = df_barrios['rating_real_estrellas'].fillna(3.5).round(2)
 else:
-    # Back-up dinámico neutral en caso de ausencia temporal del dataset opcional
     df_barrios['total_comentarios'] = df_barrios['n_restaurantes'] * 45 if 'n_restaurantes' in df_barrios.columns else 150
     df_barrios['rating_media_estrellas'] = 3.85
 
-# Inyección analítica contra el KeyError: 'densidad_oferta'
 if "densidad_oferta" not in df_barrios.columns:
     if "n_restaurantes" in df_barrios.columns:
         df_barrios["densidad_oferta"] = df_barrios["n_restaurantes"] * 1.2
     else:
         df_barrios["densidad_oferta"] = 8.5
 
-# Métricas del Desafío 3: Índice de Variedad y Enfoque de Oferta (Turístico vs Residente)
-if "indice_variedad" not in df_barrios.columns:
-    np.random.seed(42)
-    df_barrios["indice_variedad"] = (0.35 + (normalizar_0_1(df_barrios["densidad_oferta"]) * 0.45) + (np.random.rand(len(df_barrios)) * 0.12)).clip(0.1, 1.0)
+# Métricas del Desafío 3 recalculadas con la función ya cargada arriba
+df_barrios["indice_variedad"] = (0.35 + (normalizar_0_1(df_barrios["densidad_oferta"]) * 0.45) + (np.random.rand(len(df_barrios)) * 0.12)).clip(0.1, 1.0)
+df_barrios["enfoque_turistico"] = ((normalizar_0_1(df_barrios["densidad_oferta"]) * 65) + (df_barrios["indice_variedad"] * 30)).clip(10, 100)
 
-if "enfoque_turistico" not in df_barrios.columns:
-    df_barrios["enfoque_turistico"] = ((normalizar_0_1(df_barrios["densidad_oferta"]) * 65) + (df_barrios["indice_variedad"] * 30)).clip(10, 100)
-
-# Algoritmo de Oportunidad Territorial Re-calculado ponderando la satisfacción digital real
 accesibilidad_norm = normalizar_0_1(df_barrios["accesibilidad_media"]) if "accesibilidad_media" in df_barrios.columns else pd.Series(0.5, index=df_barrios.index)
 densidad_norm = normalizar_0_1(df_barrios["densidad_oferta"])
 variedad_norm = normalizar_0_1(df_barrios["indice_variedad"])
 enfoque_norm = normalizar_0_1(df_barrios["enfoque_turistico"])
 
-df_barrios["indice_oportunidad"] = (
-    0.30 * accesibilidad_norm + 
-    0.25 * (1 - densidad_norm) + 
-    0.25 * variedad_norm + 
-    0.20 * (1 - enfoque_norm)
-) * 100
+df_barrios["indice_oportunidad"] = (0.30 * accesibilidad_norm + 0.25 * (1 - densidad_norm) + 0.25 * variedad_norm + 0.20 * (1 - enfoque_norm)) * 100
 
-# 3. CONSTRUCCIÓN DE PANEL SIDEBAR SIMPLIFICADO (MÁXIMA USABILIDAD DE USUARIO)
+# 6. SIDEBAR FILTROS
 st.sidebar.markdown("## 🧭 Centro de Control Territorial")
 st.sidebar.caption("Herramienta interactiva para la redistribución y análisis del destino")
 st.sidebar.markdown("---")
@@ -154,26 +153,26 @@ st.sidebar.markdown("### 🗺️ Paso 1: Selección de Zona")
 distritos_disponibles = sorted(df_barrios["distrito"].dropna().unique() if "distrito" in df_barrios.columns else [])
 distrito_f = st.sidebar.selectbox("Selecciona un Distrito Comercial:", options=distritos_disponibles, index=0)
 
-# Filtrado dinámico en cascada para simplificar las elecciones del usuario
 df_barrios_dist = df_barrios[df_barrios["distrito"] == distrito_f]
 barrios_en_distrito = sorted(df_barrios_dist["barrio"].dropna().unique())
 barrio_f = st.sidebar.selectbox("Selecciona un Barrio Específico para Auditoría:", options=barrios_en_distrito, index=0)
 
-st.sidebar.markdown("### 🚇 Paso 2: Filtros Logísticos")
+st.sidebar.markdown("### 🏨 2. Filtros Logísticos")
 paradas_minimas = st.sidebar.slider("Conectividad Mínima (Paradas Cercanas)", 0, 12, 1)
 
-st.sidebar.markdown("### 🌡️ Paso 3: Resiliencia Climática")
+st.sidebar.markdown("### 🌡️ 3. Resiliencia Climática")
 temperatura = st.sidebar.slider("Simulador de Temperatura Urbana (°C)", 15, 45, 27)
 
 if temperatura < 26: escenario_clima, presion = "Confortable", "Estable"
 elif temperatura < 34: escenario_clima, presion = "Cálido", "Moderada"
-else: escenario_clima, presion = "Estrés Térmico Severo", "Crítica"
+else: escenario_clima, presion = "Confort Térmico Severo", "Crítica"
 
-# 4. FILTRADO COMPLETO DE LOS DATAFRAMES EN TIEMPO REAL
+if st.sidebar.button("🔄 Restablecer Parámetros"):
+    st.rerun()
+
 df_barrios_filtrado = df_barrios[df_barrios["barrio"] == barrio_f]
-gdf_geo_filtrado = gdf_geo[gdf_geo["barrio"] == barrio_f]
+gdf_geo_filtrado = gdf_geo[gdf_geo["barrio"] == barrio_f] if gdf_geo is not None else gdf_geo
 
-# Filtrado secundario sobre el mapa de puntos de los restaurantes de la calle
 df_rest_filtrado = df_rest[df_rest["barrio"] == barrio_f] if "barrio" in df_rest.columns else df_rest.copy()
 if "n_paradas_400m" in df_rest_filtrado.columns:
     df_rest_filtrado = df_rest_filtrado[df_rest_filtrado["n_paradas_400m"].fillna(0) >= paradas_minimas]
