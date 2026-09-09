@@ -358,7 +358,7 @@ with tab_algoritmo:
         )
         st.plotly_chart(fig_scatter, use_container_width=True)
         
-    with col_b2:
+    with col_g2:
         st.markdown("#### Justificación Teórica de la Toma de Decisiones")
         st.latex(r"IOT = 0.30 \cdot A_{ccesibilidad} + 0.25 \cdot (1 - D_{ensidad}) + 0.25 \cdot V_{ariedad} + 0.20 \cdot (1 - E_{nfoque})")
         st.markdown("""
