@@ -42,14 +42,15 @@ st.markdown("""
     --tui-navy: #1B115B;
     --tui-ink: #182033;
     --tui-muted: #667085;
-    --tui-bg: #F5F7FA;
+    --tui-bg: #F2F4F7; /* Cambiado a Gris Claro */
     --tui-card: #FFFFFF;
     --tui-border: #E6EAF0;
 }
 .stApp { background: var(--tui-bg) !important; color: var(--tui-ink) !important; }
 .block-container { max-width: 1500px; padding-top: 1.2rem; padding-bottom: 2.5rem; }
 
-section[data-testid="stSidebar"] { background: #FFFFFF !important; border-right: 1px solid var(--tui-border); }
+/* Cambiado a Celeste la columna izquierda de filtros */
+section[data-testid="stSidebar"] { background: #D0E7F9 !important; border-right: 1px solid var(--tui-border); }
 section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 { color: var(--tui-navy) !important; font-weight: 750; }
 section[data-testid="stSidebar"] .stMarkdown p, section[data-testid="stSidebar"] label { color: #344054 !important; }
 
