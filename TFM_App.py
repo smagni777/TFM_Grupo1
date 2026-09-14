@@ -857,9 +857,6 @@ def banner_madrid():
         ("puerta_alcala.jpg", "Puerta de Alcalá"),
         ("fuente_cibeles.jpg", "Fuente de Cibeles"),
         ("fuente_neptuno.jpg", "Fuente de Neptuno"),
-        ("gran_via_metropoli.jpg", "Gran Vía / Edificio Metrópolis"),
-        ("palacio_real.jpg", "Palacio Real"),
-        ("torres_kio.jpg", "Torres KIO"),
     ]
 
     tiles_html = ""
