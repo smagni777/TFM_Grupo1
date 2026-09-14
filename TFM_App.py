@@ -107,8 +107,8 @@ div[data-baseweb="tab-highlight"] { background-color: var(--tui-red) !important;
     border: 1px solid var(--tui-border); box-shadow: 0 3px 12px rgba(16,24,40,.055);
     min-height: 118px; position: relative; overflow: hidden;
 }
-/* Cambiado el color de la barra lateral del recuadro a Azul Oscuro */
-.kpi-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--tui-navy); }
+/* Cambiado el color de la barra lateral a un Azul Claro Intermedio */
+.kpi-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #3B5998; }
 .kpi-title {
     color: #667085 !important; font-size: 12px; font-weight: 700; text-transform: uppercase;
     letter-spacing: .035em; margin-bottom: 7px;
@@ -149,6 +149,7 @@ div[data-baseweb="select"] > div { border-radius: 9px !important; border-color: 
 div[data-testid="stAlert"] { border-radius: 11px; }
 </style>
 """, unsafe_allow_html=True)
+
 
 
 # ============================================================
