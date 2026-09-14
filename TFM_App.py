@@ -42,14 +42,13 @@ st.markdown("""
     --tui-navy: #1B115B;
     --tui-ink: #182033;
     --tui-muted: #667085;
-    --tui-bg: #F2F4F7; /* Cambiado a Gris Claro */
+    --tui-bg: #F2F4F7;
     --tui-card: #FFFFFF;
     --tui-border: #E6EAF0;
 }
 .stApp { background: var(--tui-bg) !important; color: var(--tui-ink) !important; }
 .block-container { max-width: 1500px; padding-top: 1.2rem; padding-bottom: 2.5rem; }
 
-/* Cambiado a Celeste la columna izquierda de filtros */
 section[data-testid="stSidebar"] { background: #D0E7F9 !important; border-right: 1px solid var(--tui-border); }
 section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 { color: var(--tui-navy) !important; font-weight: 750; }
 section[data-testid="stSidebar"] .stMarkdown p, section[data-testid="stSidebar"] label { color: #344054 !important; }
@@ -108,7 +107,8 @@ div[data-baseweb="tab-highlight"] { background-color: var(--tui-red) !important;
     border: 1px solid var(--tui-border); box-shadow: 0 3px 12px rgba(16,24,40,.055);
     min-height: 118px; position: relative; overflow: hidden;
 }
-.kpi-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--tui-red); }
+/* Cambiado el color de la barra lateral del recuadro a Azul Oscuro */
+.kpi-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--tui-navy); }
 .kpi-title {
     color: #667085 !important; font-size: 12px; font-weight: 700; text-transform: uppercase;
     letter-spacing: .035em; margin-bottom: 7px;
