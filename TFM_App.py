@@ -443,7 +443,29 @@ if not df_barrios.empty:
 # 6. SIDEBAR
 # ============================================================
 
+ruta_logo = IMAGES_DIR / "logo.svg"
+logo_html = ""
+
+if ruta_logo.exists():
+    try:
+        svg_contenido = ruta_logo.read_text(encoding="utf-8")
+        
+        # Blindamos el SVG metiéndolo en un contenedor que fuerza el tamaño y centrado exacto
+        logo_html = f"""
+        <div style="display: flex; justify-content: center; align-items: center; padding: 15px 0 25px 0; width: 100%;">
+            <div style="width: 150px; height: 55px; display: flex; justify-content: center;">
+                {svg_contenido.replace("<svg", '<svg style="width:100%; height:100%; object-fit:contain;"')}
+            </div>
+        </div>
+        """
+    except Exception:
+        logo_html = ""
+
+if logo_html:
+    st.sidebar.markdown(logo_html, unsafe_allow_html=True)
+
 st.sidebar.markdown("## TUI Territorial Intelligence")
+
 st.sidebar.markdown(
     "**Panel de análisis territorial turístico**"
 )
