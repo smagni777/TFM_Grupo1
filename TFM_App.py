@@ -443,32 +443,37 @@ if not df_barrios.empty:
 # 6. SIDEBAR
 # ============================================================
 
-ruta_logo = IMAGES_DIR / "logo.svg"
-logo_html = ""
-
-if ruta_logo.exists():
-    try:
-        svg_contenido = ruta_logo.read_text(encoding="utf-8")
-        
-        # Blindamos el SVG metiéndolo en un contenedor que fuerza el tamaño y centrado exacto
-        logo_html = f"""
-        <div style="display: flex; justify-content: center; align-items: center; padding: 15px 0 25px 0; width: 100%;">
-            <div style="width: 150px; height: 55px; display: flex; justify-content: center;">
-                {svg_contenido.replace("<svg", '<svg style="width:100%; height:100%; object-fit:contain;"')}
-            </div>
-        </div>
-        """
-    except Exception:
-        logo_html = ""
-
-if logo_html:
-    st.sidebar.markdown(logo_html, unsafe_allow_html=True)
 
 st.sidebar.markdown("## TUI Territorial Intelligence")
+
+# Resolvemos la ruta de la carpeta de imágenes de forma independiente para evitar errores de orden
+from pathlib import Path
+DIR_IMAGENES_SIDEBAR = Path(__file__).resolve().parent / "images"
+ruta_logo_svg = DIR_IMAGENES_SIDEBAR / "logo.svg"
+
+if ruta_logo_svg.exists():
+    try:
+        import base64
+        # Codificamos el SVG local a Base64 de forma segura
+        datos_svg = base64.b64encode(ruta_logo_svg.read_bytes()).decode("utf-8")
+        logo_base64 = f"data:image/svg+xml;base64,{datos_svg}"
+        
+        # Insertamos el logo perfectamente centrado y con escalado limpio
+        st.sidebar.markdown(
+            f"""
+            <div style="display: flex; justify-content: center; align-items: center; padding: 10px 0 25px 0; width: 100%;">
+                <img src="{logo_base64}" style="width: 150px; height: 60px; object-fit: contain;">
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    except Exception:
+        pass
 
 st.sidebar.markdown(
     "**Panel de análisis territorial turístico**"
 )
+
 
 st.sidebar.caption(
     "Plataforma de inteligencia georreferenciada para la "
