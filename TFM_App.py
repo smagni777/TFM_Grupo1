@@ -849,21 +849,14 @@ def _imagen_base64(nombre_archivo):
 
 def banner_madrid():
     """
-    Cabecera visual con un mosaico de fotografías reales de Madrid
-    (Puerta de Alcalá, Fuente de Cibeles, Fuente de Neptuno, Gran Vía
-    con el Edificio Metrópolis, Palacio Real y Torres KIO) y el
-    título del dashboard superpuesto.
-
-    Las fotografías se cargan desde la carpeta local /images (deben
-    subirse al repositorio junto con app.py) en lugar de descargarse
-    de internet en cada ejecución. Proceden de Pixabay (Pixabay
+    Las fotografías se cargan desde la carpeta local /images Proceden de Pixabay (Pixabay
     Content License: uso libre, sin necesidad de atribución).
     """
     fotos = [
         ("puerta_alcala.jpg", "Puerta de Alcalá"),
         ("fuente_cibeles.jpg", "Fuente de Cibeles"),
         ("fuente_neptuno.jpg", "Fuente de Neptuno"),
-        ("gran_via_metropolis.jpg", "Gran Vía / Edificio Metrópolis"),
+        ("gran_via_metropoli.jpg", "Gran Vía / Edificio Metrópolis"),
         ("palacio_real.jpg", "Palacio Real"),
         ("torres_kio.jpg", "Torres KIO"),
     ]
